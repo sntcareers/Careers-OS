@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career OS</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --text: #141820;
+      --muted: #717784;
+      --line: #e7e9ee;
+      --dark: #10131a;
+      --soft: #f0f2f6;
+      --green: #1d9c68;
+      --amber: #c98612;
+      --red: #c64b4b;
+    }
+
+    body {
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: var(--dark);
+      color: white;
+      padding: 28px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 750;
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      color: #8d94a1;
+      font-size: 12px;
+      margin-bottom: 32px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 0;
+      color: #9ea4af;
+      padding: 12px 14px;
+      border-radius: 9px;
+      text-align: left;
+      transition: 0.2s;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: #20242d;
+      color: white;
+    }
+
+    .sidebar-bottom {
+      position: absolute;
+      bottom: 24px;
+      left: 18px;
+      right: 18px;
+    }
+
+    .sidebar-btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #333844;
+      background: transparent;
+      color: #aab0bb;
+      margin-top: 8px;
+    }
+
+    .main {
+      padding: 36px;
+      max-width: 1350px;
+      width: 100%;
+      margin: auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 26px;
+      gap: 20px;
+    }
+
+    h1 {
+      font-size: 29px;
+      letter-spacing: -0.7px;
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .subtext {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 20px;
+    }
+
+    .metric-card {
+      min-height: 132px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .metric-value {
+      font-size: 34px;
+      font-weight: 750;
+      letter-spacing: -1px;
+    }
+
+    .metric-note {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .score-big {
+      font-size: 55px;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+
+    .score-row {
+      margin-bottom: 18px;
+    }
+
+    .score-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      background: #eceef2;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--dark);
+      border-radius: 20px;
+    }
+
+    .priority {
+      border-left: 3px solid var(--dark);
+      padding: 11px 13px;
+      background: #f6f7f9;
+      margin-bottom: 9px;
+      border-radius: 0 8px 8px 0;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 650;
+      margin-bottom: 7px;
+      color: #424753;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #d9dce3;
+      border-radius: 8px;
+      background: white;
+      padding: 10px 11px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #999faa;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .slider-wrap {
+      display: grid;
+      grid-template-columns: 1fr 45px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      padding: 0;
+    }
+
+    .slider-value {
+      font-weight: 700;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 15px;
+      background: var(--dark);
+      color: white;
+      font-weight: 650;
+    }
+
+    .btn.secondary {
+      background: white;
+      color: var(--dark);
+      border: 1px solid #d8dbe2;
+    }
+
+    .btn.small {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .btn.danger {
+      background: #fff;
+      color: #aa3b3b;
+      border: 1px solid #e8caca;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 550;
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .status {
+      padding: 5px 8px;
+      border-radius: 20px;
+      background: #f0f1f4;
+      font-size: 11px;
+      display: inline-block;
+    }
+
+    .training-question {
+      font-size: 20px;
+      font-weight: 650;
+      line-height: 1.5;
+      margin: 15px 0 25px;
+    }
+
+    .timer {
+      font-size: 43px;
+      font-weight: 750;
+      letter-spacing: -2px;
+      margin: 18px 0;
+    }
+
+    .review-output {
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-size: 14px;
+      background: #f6f7f9;
+      border-radius: 9px;
+      padding: 16px;
+      min-height: 150px;
+    }
+
+    .chatgpt-box {
+      background: #11151b;
+      color: #eef0f4;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .chatgpt-box h2 {
+      color: white;
+    }
+
+    .chatgpt-box p {
+      color: #a8aeb9;
+      font-size: 13px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .chatgpt-box textarea {
+      background: #1b2028;
+      border: 1px solid #353b47;
+      color: white;
+      min-height: 260px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      border-radius: 20px;
+      background: var(--soft);
+      padding: 5px 8px;
+      margin-right: 5px;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 20px 0;
+    }
+
+    .section-gap {
+      margin-top: 18px;
+    }
+
+    .mentor-note {
+      border-bottom: 1px solid var(--line);
+      padding: 13px 0;
+    }
+
+    .mentor-note:last-child {
+      border-bottom: 0;
+    }
+
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        height: auto;
+        position: relative;
+        padding: 14px;
+      }
+
+      .brand-sub {
+        display: none;
+      }
+
+      .brand {
+        margin-bottom: 14px;
+      }
+
+      .nav {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+
+      .nav-btn {
+        white-space: nowrap;
+      }
+
+      .sidebar-bottom {
+        display: none;
+      }
+
+      .main {
+        padding: 20px 14px;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+
+    <div class="brand">Career OS</div>
+    <div class="brand-sub">High-performance recruiting system</div>
+
+    <div class="nav">
+      <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+      <button class="nav-btn" data-page="profile">Profile</button>
+      <button class="nav-btn" data-page="applications">Applications</button>
+      <button class="nav-btn" data-page="training">Training</button>
+      <button class="nav-btn" data-page="mentor">Mentor Review</button>
+    </div>
+
+    <div class="sidebar-bottom">
+      <button class="sidebar-btn" onclick="exportData()">Export Data</button>
+      <button class="sidebar-btn" onclick="document.getElementById('importFile').click()">
+        Import Data
+      </button>
+
+      <input
+        id="importFile"
+        type="file"
+        accept=".json"
+        style="display:none"
+        onchange="importData(event)"
+      />
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard" class="page active">
+
+      <div class="page-header">
+        <div>
+          <h1 id="dashboardName">Student Dashboard</h1>
+          <div class="subtext" id="dashboardTarget">
+            Build your profile before applying.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-3">
+
+        <div class="card metric-card">
+          <div class="metric-label">Overall Readiness</div>
+          <div class="metric-value" id="overallScore">0</div>
+          <div class="metric-note">Weighted career readiness score</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Applications</div>
+          <div class="metric-value" id="applicationCount">0</div>
+          <div class="metric-note">Tracked opportunities</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-label">Interview Sessions</div>
+          <div class="metric-value" id="trainingCount">0</div>
+          <div class="metric-note">Questions practised</div>
+        </div>
+
+      </div>
+
+      <div class="grid grid-2 section-gap">
+
+        <div class="card">
+          <h2>Candidate Scorecard</h2>
+          <div id="scorecard"></div>
+        </div>
+
+        <div class="card">
+          <h2>Highest Priority Actions</h2>
+          <div id="priorities"></div>
+        </div>
+
+      </div>
+
+      <div class="card section-gap">
+        <h2>Recruiting Diagnosis</h2>
+        <div id="diagnosis"></div>
+      </div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+
+    <section id="profile" class="page">
+
+      <div class="page-header">
+        <div>
+          <h1>Candidate Profile</h1>
+          <div class="subtext">
+            Quantify your strengths before optimising applications.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+
+        <div class="card">
+
+          <h2>Personal Information</h2>
+
+          <div class="form-group">
+            <label>Name</label>
+            <input id="name" placeholder="Alex Chen" />
+          </div>
+
+          <div class="form-group">
+            <label>University</label>
+            <input id="university" placeholder="LSE" />
+          </div>
+
+          <div class="form-group">
+            <label>Degree</label>
+            <input id="degree" placeholder="BSc Economics" />
+          </div>
+
+          <div class="form-group">
+            <label>Graduation Year</label>
+            <input id="graduation" placeholder="2028" />
+          </div>
+
+          <div class="form-group">
+            <label>Primary Career Target</label>
+            <select id="target">
+              <option>Investment Banking</option>
+              <option>Private Equity</option>
+              <option>Management Consulting</option>
+              <option>Asset Management</option>
+              <option>Sales & Trading</option>
+              <option>Corporate Finance</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Target Firms</label>
+            <textarea
+              id="targetFirms"
+              placeholder="Goldman Sachs, Evercore, Lazard..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Experience Summary</label>
+            <textarea
+              id="experience"
+              placeholder="Internships, societies, projects, competitions..."
+            ></textarea>
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h2>Recruitability Assessment</h2>
+
+          <div id="sliders"></div>
+
+          <button class="btn" onclick="saveProfile()">
+            Save Profile
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- APPLICATIONS -->
+
+    <section id="applications" class="page">
+
+      <div class="page-header">
+        <div>
+          <h1>Application Pipeline</h1>
+          <div class="subtext">
+            Manage applications like a professional deal pipeline.
+          </div>
+        </div>
+
+        <button class="btn" onclick="addApplication()">
+          + Add Application
+        </button>
+      </div>
+
+      <div class="card">
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Readiness</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody id="applicationTable"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TRAINING -->
+
+    <section id="training" class="page">
+
+      <div class="page-header">
+        <div>
+          <h1>Interview Gym</h1>
+          <div class="subtext">
+            Deliberate practice under time pressure.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+
+        <div class="card">
+
+          <div class="metric-label">Current Question</div>
+
+          <div
+            class="training-question"
+            id="trainingQuestion"
+          >
+            Press "New Question" to begin.
+          </div>
+
+          <div class="timer" id="timer">01:30</div>
+
+          <div class="actions">
+            <button class="btn" onclick="newQuestion()">
+              New Question
+            </button>
+
+            <button class="btn secondary" onclick="startTimer()">
+              Start Timer
+            </button>
+
+            <button class="btn secondary" onclick="resetTimer()">
+              Reset
+            </button>
+          </div>
+
+        </div>
+
+        <div class="card">
+
+          <h2>Self Review</h2>
+
+          <div class="form-group">
+            <label>Answer Notes</label>
+            <textarea
+              id="answerNotes"
+              placeholder="What went well? Where did the answer break down?"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Score / 10</label>
+            <input
+              id="answerScore"
+              type="number"
+              min="1"
+              max="10"
+              value="7"
+            />
+          </div>
+
+          <button class="btn" onclick="saveTraining()">
+            Save Session
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- MENTOR REVIEW -->
+
+    <section id="mentor" class="page">
+
+      <div class="page-header">
+        <div>
+          <h1>Mentor Review</h1>
+          <div class="subtext">
+            Combine structured data with expert judgement.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+
+        <div class="card">
+
+          <h2>System Diagnosis</h2>
+
+          <div
+            class="review-output"
+            id="reviewOutput"
+          ></div>
+
+          <div class="actions">
+            <button class="btn" onclick="generateReview()">
+              Generate Review
+            </button>
+          </div>
+
+          <div class="section-gap">
+
+            <h2>Mentor Notes</h2>
+
+            <textarea
+              id="mentorNotes"
+              placeholder="Add your human judgement here..."
+            ></textarea>
+
+            <div class="actions">
+              <button class="btn" onclick="saveMentorNotes()">
+                Save Notes
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="chatgpt-box">
+
+          <h2>ChatGPT Deep Review</h2>
+
+          <p>
+            This version uses no API. Generate a structured prompt,
+            paste it into ChatGPT Plus, then bring the strongest insights
+            back into the student's plan.
+          </p>
+
+          <textarea
+            id="aiPrompt"
+            readonly
+          ></textarea>
+
+          <div class="actions">
+            <button class="btn" onclick="generatePrompt()">
+              Generate Prompt
+            </button>
+
+            <button class="btn secondary" onclick="copyPrompt()">
+              Copy Prompt
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script>
+
+const competencies = [
+  "Academic Signal",
+  "Commercial Awareness",
+  "Technical Ability",
+  "Leadership",
+  "Communication",
+  "Career Narrative",
+  "Evidence Quality",
+  "Networking Strength"
+];
+
+const defaultData = {
+  profile: {
+    name: "",
+    university: "",
+    degree: "",
+    graduation: "",
+    target: "Investment Banking",
+    targetFirms: "",
+    experience: "",
+    scores: {
+      "Academic Signal": 70,
+      "Commercial Awareness": 50,
+      "Technical Ability": 55,
+      "Leadership": 50,
+      "Communication": 60,
+      "Career Narrative": 45,
+      "Evidence Quality": 50,
+      "Networking Strength": 35
+    }
+  },
+
+  applications: [],
+
+  training: [],
+
+  mentorNotes: ""
+};
+
+
+let data =
+  JSON.parse(localStorage.getItem("careerOS")) ||
+  JSON.parse(JSON.stringify(defaultData));
+
+
+function save() {
+  localStorage.setItem(
+    "careerOS",
+    JSON.stringify(data)
+  );
+
+  refresh();
+}
+
+
+function weightedScore() {
+
+  const weights = {
+    "Academic Signal": 0.12,
+    "Commercial Awareness": 0.15,
+    "Technical Ability": 0.15,
+    "Leadership": 0.11,
+    "Communication": 0.14,
+    "Career Narrative": 0.13,
+    "Evidence Quality": 0.12,
+    "Networking Strength": 0.08
+  };
+
+  let total = 0;
+
+  Object.entries(weights).forEach(
+    ([key, weight]) => {
+      total +=
+        (data.profile.scores[key] || 0) *
+        weight;
+    }
+  );
+
+  return Math.round(total);
+}
+
+
+function buildSliders() {
+
+  const box =
+    document.getElementById("sliders");
+
+  box.innerHTML = "";
+
+  competencies.forEach(name => {
+
+    const value =
+      data.profile.scores[name] || 50;
+
+    box.innerHTML += `
+      <div class="form-group">
+        <label>${name}</label>
+
+        <div class="slider-wrap">
+
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="${value}"
+            id="score-${safeId(name)}"
+            oninput="
+              document.getElementById(
+                'value-${safeId(name)}'
+              ).textContent = this.value
+            "
+          >
+
+          <div
+            class="slider-value"
+            id="value-${safeId(name)}"
+          >
+            ${value}
+          </div>
+
+        </div>
+      </div>
+    `;
+  });
+}
+
+
+function safeId(text) {
+  return text.replace(/\s+/g, "-");
+}
+
+
+function saveProfile() {
+
+  data.profile.name =
+    document.getElementById("name").value;
+
+  data.profile.university =
+    document.getElementById("university").value;
+
+  data.profile.degree =
+    document.getElementById("degree").value;
+
+  data.profile.graduation =
+    document.getElementById("graduation").value;
+
+  data.profile.target =
+    document.getElementById("target").value;
+
+  data.profile.targetFirms =
+    document.getElementById("targetFirms").value;
+
+  data.profile.experience =
+    document.getElementById("experience").value;
+
+  competencies.forEach(name => {
+
+    const slider =
+      document.getElementById(
+        `score-${safeId(name)}`
+      );
+
+    data.profile.scores[name] =
+      Number(slider.value);
+  });
+
+  save();
+
+  alert("Profile saved.");
+}
+
+
+function loadProfileForm() {
+
+  const p = data.profile;
+
+  document.getElementById("name").value =
+    p.name || "";
+
+  document.getElementById("university").value =
+    p.university || "";
+
+  document.getElementById("degree").value =
+    p.degree || "";
+
+  document.getElementById("graduation").value =
+    p.graduation || "";
+
+  document.getElementById("target").value =
+    p.target || "Investment Banking";
+
+  document.getElementById("targetFirms").value =
+    p.targetFirms || "";
+
+  document.getElementById("experience").value =
+    p.experience || "";
+}
+
+
+function refreshDashboard() {
+
+  const score =
+    weightedScore();
+
+  document.getElementById(
+    "overallScore"
+  ).textContent = score;
+
+  document.getElementById(
+    "applicationCount"
+  ).textContent =
+    data.applications.length;
+
+  document.getElementById(
+    "trainingCount"
+  ).textContent =
+    data.training.length;
+
+  document.getElementById(
+    "dashboardName"
+  ).textContent =
+    data.profile.name
+      ? `${data.profile.name}'s Career OS`
+      : "Student Dashboard";
+
+  const profileLine = [
+    data.profile.university,
+    data.profile.degree,
+    data.profile.target
+  ]
+  .filter(Boolean)
+  .join(" · ");
+
+  document.getElementById(
+    "dashboardTarget"
+  ).textContent =
+    profileLine ||
+    "Build your profile before applying.";
+
+
+  const scorecard =
+    document.getElementById(
+      "scorecard"
+    );
+
+  scorecard.innerHTML = "";
+
+  competencies.forEach(name => {
+
+    const value =
+      data.profile.scores[name];
+
+    scorecard.innerHTML += `
+      <div class="score-row">
+
+        <div class="score-top">
+          <span>${name}</span>
+          <strong>${value}</strong>
+        </div>
+
+        <div class="progress">
+          <div
+            class="progress-fill"
+            style="width:${value}%"
+          ></div>
+        </div>
+
+      </div>
+    `;
+  });
+
+
+  const sorted =
+    competencies
+      .map(name => ({
+        name,
+        score:
+          data.profile.scores[name]
+      }))
+      .sort((a, b) =>
+        a.score - b.score
+      );
+
+
+  const priorities =
+    document.getElementById(
+      "priorities"
+    );
+
+  priorities.innerHTML =
+    sorted
+      .slice(0, 4)
+      .map(item =>
+        `<div class="priority">
+          ${priorityAdvice(
+            item.name,
+            item.score
+          )}
+        </div>`
+      )
+      .join("");
+
+
+  document.getElementById(
+    "diagnosis"
+  ).innerHTML =
+    buildDiagnosis();
+}
+
+
+function priorityAdvice(
+  competency,
+  score
+) {
+
+  const map = {
+
+    "Commercial Awareness":
+      "Develop two high-quality deal or market discussions with independent judgement.",
+
+    "Technical Ability":
+      "Complete targeted technical drills and explain concepts without memorised language.",
+
+    "Leadership":
+      "Create stronger evidence of ownership, initiative and measurable responsibility.",
+
+    "Communication":
+      "Practise concise 60–90 second answers with clearer structure and stronger conclusions.",
+
+    "Career Narrative":
+      "Build a coherent story connecting background, decisions and career motivation.",
+
+    "Evidence Quality":
+      "Replace generic claims with quantified evidence, outcomes and specific actions.",
+
+    "Networking Strength":
+      "Build a targeted network of analysts, associates and alumni in priority firms.",
+
+    "Academic Signal":
+      "Strengthen evidence of intellectual ability through grades, projects or competitions."
+  };
+
+  return `
+    <strong>${competency}</strong>
+    (${score}/100): ${map[competency]}
+  `;
+}
+
+
+function buildDiagnosis() {
+
+  const score =
+    weightedScore();
+
+  const scores =
+    data.profile.scores;
+
+  const weakest =
+    Object.entries(scores)
+      .sort(
+        (a, b) =>
+          a[1] - b[1]
+      )
+      .slice(0, 2);
+
+  let level;
+
+  if (score >= 80)
+    level =
+      "The candidate appears competitive on fundamentals. Improvement should focus on differentiation and execution.";
+
+  else if (score >= 65)
+    level =
+      "The profile has credible foundations but still contains material weaknesses that can cause rejection at selective firms.";
+
+  else if (score >= 50)
+    level =
+      "The candidate is currently under-developed for highly selective recruiting and should prioritise profile-building before maximising application volume.";
+
+  else
+    level =
+      "The candidate requires substantial profile development before aggressive applications to highly selective firms.";
+
+  return `
+    <p>${level}</p>
+
+    <br>
+
+    <p>
+      The two most important constraints are
+      <strong>${weakest[0][0]}</strong>
+      and
+      <strong>${weakest[1][0]}</strong>.
+    </p>
+  `;
+}
+
+
+/* APPLICATIONS */
+
+
+function addApplication() {
+
+  const company =
+    prompt("Company name:");
+
+  if (!company)
+    return;
+
+  const role =
+    prompt(
+      "Role:",
+      "Summer Analyst"
+    ) || "";
+
+  const status =
+    prompt(
+      "Status:",
+      "Researching"
+    ) || "Researching";
+
+  const deadline =
+    prompt(
+      "Deadline (YYYY-MM-DD):",
+      ""
+    ) || "";
+
+  const readiness =
+    prompt(
+      "Readiness score / 100:",
+      weightedScore()
+    ) || weightedScore();
+
+  data.applications.push({
+    id: Date.now(),
+    company,
+    role,
+    status,
+    deadline,
+    readiness
+  });
+
+  save();
+}
+
+
+function renderApplications() {
+
+  const table =
+    document.getElementById(
+      "applicationTable"
+    );
+
+  if (!data.applications.length) {
+
+    table.innerHTML = `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            No applications yet.
+          </div>
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  table.innerHTML =
+    data.applications
+      .map(app => `
+        <tr>
+
+          <td>
+            <strong>
+              ${escapeHtml(app.company)}
+            </strong>
+          </td>
+
+          <td>
+            ${escapeHtml(app.role)}
+          </td>
+
+          <td>
+            <span class="status">
+              ${escapeHtml(app.status)}
+            </span>
+          </td>
+
+          <td>
+            ${escapeHtml(app.deadline)}
+          </td>
+
+          <td>
+            ${app.readiness}
+          </td>
+
+          <td>
+            <button
+              class="btn small danger"
+              onclick="deleteApplication(
+                ${app.id}
+              )"
+            >
+              Remove
+            </button>
+          </td>
+
+        </tr>
+      `)
+      .join("");
+}
+
+
+function deleteApplication(id) {
+
+  data.applications =
+    data.applications.filter(
+      x => x.id !== id
+    );
+
+  save();
+}
+
+
+/* TRAINING */
+
+
+const questions = [
+
+  "Walk me through your CV in 90 seconds.",
+
+  "Why investment banking rather than consulting or asset management?",
+
+  "Tell me about a recent transaction that you found interesting.",
+
+  "If interest rates fall by 100bps, what could happen to valuation multiples?",
+
+  "Walk me through the three financial statements.",
+
+  "How would a £10 increase in depreciation affect the financial statements?",
+
+  "Tell me about a time you changed someone's mind.",
+
+  "Describe a situation where you performed under significant pressure.",
+
+  "Pitch me a company you would invest in.",
+
+  "What is one market consensus view you disagree with?",
+
+  "Why this firm rather than another investment bank?",
+
+  "What determines whether an acquisition is accretive or dilutive?",
+
+  "Explain enterprise value to somebody with no finance background.",
+
+  "Tell me about a failure and what specifically changed afterwards.",
+
+  "A CEO asks whether they should acquire a competitor. How would you approach the question?"
+];
+
+
+let currentQuestion = "";
+let timerInterval = null;
+let timeRemaining = 90;
+
+
+function newQuestion() {
+
+  currentQuestion =
+    questions[
+      Math.floor(
+        Math.random() *
+        questions.length
+      )
+    ];
+
+  document.getElementById(
+    "trainingQuestion"
+  ).textContent =
+    currentQuestion;
+
+  resetTimer();
+}
+
+
+function startTimer() {
+
+  clearInterval(timerInterval);
+
+  timerInterval =
+    setInterval(() => {
+
+      timeRemaining--;
+
+      renderTimer();
+
+      if (timeRemaining <= 0) {
+
+        clearInterval(timerInterval);
+
+        alert("Time.");
+      }
+
+    }, 1000);
+}
+
+
+function resetTimer() {
+
+  clearInterval(timerInterval);
+
+  timeRemaining = 90;
+
+  renderTimer();
+}
+
+
+function renderTimer() {
+
+  const minutes =
+    Math.floor(
+      timeRemaining / 60
+    );
+
+  const seconds =
+    timeRemaining % 60;
+
+  document.getElementById(
+    "timer"
+  ).textContent =
+    `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+}
+
+
+function saveTraining() {
+
+  if (!currentQuestion) {
+    alert(
+      "Generate a question first."
+    );
+
+    return;
+  }
+
+  const score =
+    Number(
+      document.getElementById(
+        "answerScore"
+      ).value
+    );
+
+  const notes =
+    document.getElementById(
+      "answerNotes"
+    ).value;
+
+  data.training.push({
+    date:
+      new Date().toISOString(),
+    question:
+      currentQuestion,
+    score,
+    notes
+  });
+
+  document.getElementById(
+    "answerNotes"
+  ).value = "";
+
+  save();
+
+  alert("Training session saved.");
+}
+
+
+/* MENTOR REVIEW */
+
+
+function generateReview() {
+
+  const p =
+    data.profile;
+
+  const score =
+    weightedScore();
+
+  const ranked =
+    Object.entries(
+      p.scores
+    ).sort(
+      (a, b) =>
+        a[1] - b[1]
+    );
+
+  const weakest =
+    ranked.slice(0, 3);
+
+  const strongest =
+    ranked.slice(-2).reverse();
+
+  const review = `
+CURRENT READINESS
+
+Overall score: ${score}/100
+Target: ${p.target}
+
+
+STRONGEST SIGNALS
+
+${strongest
+  .map(
+    x =>
+      `• ${x[0]}: ${x[1]}/100`
+  )
+  .join("\n")}
+
+
+PRIMARY CONSTRAINTS
+
+${weakest
+  .map(
+    x =>
+      `• ${x[0]}: ${x[1]}/100`
+  )
+  .join("\n")}
+
+
+MENTOR INTERPRETATION
+
+The student should avoid treating recruiting as a pure application-volume problem.
+
+The priority should be to improve the weakest signals before repeatedly submitting materially similar applications.
+
+
+NEXT 30 DAYS
+
+1. Create one differentiated piece of career evidence.
+
+2. Improve the lowest-scoring competency through deliberate practice.
+
+3. Complete at least five targeted interview sessions.
+
+4. Build a targeted networking pipeline.
+
+5. Review application quality before increasing application quantity.
+  `.trim();
+
+  document.getElementById(
+    "reviewOutput"
+  ).textContent =
+    review;
+}
+
+
+function saveMentorNotes() {
+
+  data.mentorNotes =
+    document.getElementById(
+      "mentorNotes"
+    ).value;
+
+  save();
+
+  alert("Mentor notes saved.");
+}
+
+
+function generatePrompt() {
+
+  const p =
+    data.profile;
+
+  const trainingHistory =
+    data.training
+      .slice(-8)
+      .map(x =>
+        `${x.question} | Score ${x.score}/10 | Notes: ${x.notes}`
+      )
+      .join("\n");
+
+  const applications =
+    data.applications
+      .map(x =>
+        `${x.company} — ${x.role} — ${x.status} — readiness ${x.readiness}`
+      )
+      .join("\n");
+
+  const prompt = `
+You are acting as a highly selective UK investment banking / consulting recruiting strategist.
+
+Your job is NOT to simply improve wording.
+
+Your job is to identify why this student may fail to receive interviews or offers, identify the highest-leverage weaknesses, and prescribe specific actions that materially improve the student's competitiveness.
+
+STUDENT
+
+Name: ${p.name}
+University: ${p.university}
+Degree: ${p.degree}
+Graduation: ${p.graduation}
+Target career: ${p.target}
+Target firms: ${p.targetFirms}
+
+EXPERIENCE
+
+${p.experience}
+
+
+RECRUITABILITY SCORES
+
+${Object.entries(p.scores)
+  .map(
+    ([k,v]) =>
+      `${k}: ${v}/100`
+  )
+  .join("\n")}
+
+
+APPLICATION PIPELINE
+
+${applications || "None yet"}
+
+
+RECENT INTERVIEW TRAINING
+
+${trainingHistory || "No sessions recorded"}
+
+
+MENTOR NOTES
+
+${data.mentorNotes || "None"}
+
+
+YOUR TASK
+
+Produce a rigorous recruiting diagnosis.
+
+Structure the answer as:
+
+1. Candidate investment thesis
+2. Why elite firms might reject this student
+3. Top three competitive advantages
+4. Top three bottlenecks
+5. Evidence currently missing from the profile
+6. Experiences the student should deliberately create
+7. 30-day action plan
+8. Interview weaknesses likely to emerge
+9. Networking strategy
+10. Application strategy
+11. Three uncomfortable questions the student needs to answer
+12. Exact priorities ranked by expected impact
+
+Be specific.
+
+Avoid generic advice such as "network more", "improve your CV", or "practise interviews".
+
+Think like someone deciding whether this student belongs in the top 5% of candidates.
+  `.trim();
+
+  document.getElementById(
+    "aiPrompt"
+  ).value =
+    prompt;
+}
+
+
+async function copyPrompt() {
+
+  const text =
+    document.getElementById(
+      "aiPrompt"
+    ).value;
+
+  if (!text) {
+    generatePrompt();
+  }
+
+  await navigator.clipboard.writeText(
+    document.getElementById(
+      "aiPrompt"
+    ).value
+  );
+
+  alert("Prompt copied.");
+}
+
+
+/* DATA */
+
+
+function exportData() {
+
+  const blob =
+    new Blob(
+      [
+        JSON.stringify(
+          data,
+          null,
+          2
+        )
+      ],
+      {
+        type:
+          "application/json"
+      }
+    );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const link =
+    document.createElement("a");
+
+  link.href = url;
+
+  link.download =
+    `${data.profile.name || "student"}-career-os.json`;
+
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+
+function importData(event) {
+
+  const file =
+    event.target.files[0];
+
+  if (!file)
+    return;
+
+  const reader =
+    new FileReader();
+
+  reader.onload = e => {
+
+    try {
+
+      data =
+        JSON.parse(
+          e.target.result
+        );
+
+      save();
+
+      loadProfileForm();
+
+      buildSliders();
+
+      document.getElementById(
+        "mentorNotes"
+      ).value =
+        data.mentorNotes || "";
+
+      alert(
+        "Student data imported."
+      );
+
+    } catch {
+
+      alert(
+        "Invalid JSON file."
+      );
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+
+function escapeHtml(text) {
+
+  return String(text || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+
+/* NAVIGATION */
+
+
+document
+  .querySelectorAll(
+    ".nav-btn"
+  )
+  .forEach(btn => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(
+            ".nav-btn"
+          )
+          .forEach(
+            x =>
+              x.classList.remove(
+                "active"
+              )
+          );
+
+        document
+          .querySelectorAll(
+            ".page"
+          )
+          .forEach(
+            x =>
+              x.classList.remove(
+                "active"
+              )
+          );
+
+        btn.classList.add(
+          "active"
+        );
+
+        document
+          .getElementById(
+            btn.dataset.page
+          )
+          .classList.add(
+            "active"
+          );
+      }
+    );
+  });
+
+
+function refresh() {
+
+  refreshDashboard();
+
+  renderApplications();
+
+  document.getElementById(
+    "mentorNotes"
+  ).value =
+    data.mentorNotes || "";
+}
+
+
+buildSliders();
+
+loadProfileForm();
+
+refresh();
+
+renderTimer();
+
+</script>
+
+</body>
+</html>
