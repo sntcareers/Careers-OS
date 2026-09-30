@@ -1,0 +1,16 @@
+SNT Careers OS V3 — FLAT / NO-FOLDER VERSION
+
+This version is designed specifically for GitHub web upload.
+There are NO folders. The logo is embedded directly inside index.html.
+All student resources sit at repository root level.
+
+UPLOAD:
+1. Extract this ZIP on your computer.
+2. Open GitHub repository -> upload files page.
+3. Click “choose your files”.
+4. Select index.html AND all files beginning SNT- at the same time.
+5. Commit changes.
+
+If GitHub struggles with the total upload, upload in batches. Always upload index.html first.
+
+Do not upload this ZIP itself; GitHub Pages does not unpack ZIP files.
